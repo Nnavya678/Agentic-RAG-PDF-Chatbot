@@ -1,4 +1,11 @@
 from dotenv import load_dotenv
+import streamlit as st
+import os
+
+try:
+    os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
+except Exception:
+    pass
 load_dotenv()
 import os
 from langchain_community.document_loaders import PyPDFLoader,PyPDFDirectoryLoader
@@ -9,7 +16,7 @@ from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_huggingface import HuggingFaceEmbeddings
 from langgraph.checkpoint.memory import InMemorySaver
-import streamlit as st
+
 
 ### data in st session
 if "document_uploaded" not in st.session_state:
