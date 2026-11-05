@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
-
+import os
 from langchain_community.document_loaders import PyPDFLoader,PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_groq import ChatGroq
@@ -71,12 +71,23 @@ def process_document(path):
 
 ### upload ui
 if not st.session_state.document_uploaded:
-    uploaded=st.file_uploader(label="Select pdf files", type=["pdf"],accept_multiple_files=True)
+
+    uploaded = st.file_uploader(
+        label="Select pdf files",
+        type=["pdf"],
+        accept_multiple_files=True
+    )
+
     if uploaded:
         with st.spinner("Processing..."):
-            path="./docs_files/"
+
+            path = "./docs_files/"
+
+            # Create directory if it doesn't exist
+            os.makedirs(path, exist_ok=True)
+
             for file in uploaded:
-                with open(path + file.name,"wb") as f:
+                with open(os.path.join(path, file.name), "wb") as f:
                     f.write(file.getvalue())
 
             process_document(path)
